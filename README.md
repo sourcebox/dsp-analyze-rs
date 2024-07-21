@@ -1,6 +1,6 @@
 # dsp-analyze
 
-This crate performs basic audio dsp analysis.
+This crate performs basic audio dsp analysis and plots the results.
 
 **WARNING**: It is currently in a very early state and needs contributions to be improved.
 
@@ -26,6 +26,10 @@ analyzer.run(|in_samples, out_samples| {
 analyzer.plot_magnitude("Test Plot", "out/test_mag.svg");
 analyzer.plot_phase("Test Plot", "out/test_phase.svg");
 ```
+
+## Tests
+
+Run `cargo test` for a number of integration tests that produce plots and audio files in the `./out` directory.
 
 ## License
 
