@@ -85,7 +85,7 @@ impl FftAnalyzer {
         self.clear();
 
         self.in_samples = sweep(self.config.sample_rate);
-        self.out_samples = self.in_samples.clone();
+        self.out_samples.clone_from(&self.in_samples);
         let chunk_size = self.config.block_size;
 
         for (in_samples, out_samples) in self
