@@ -49,8 +49,20 @@ impl<'a> Series<'a> {
 
     pub fn y_range(&self) -> Range<f32> {
         assert_ok(self.validate());
-        let min = self.series.iter().copied().min_by(f32::total_cmp).unwrap();
-        let max = self.series.iter().copied().max_by(f32::total_cmp).unwrap();
+        let min = self
+            .series
+            .iter()
+            .copied()
+            .min_by(f32::total_cmp)
+            .unwrap()
+            .clamp(f32::MIN, f32::MAX);
+        let max = self
+            .series
+            .iter()
+            .copied()
+            .max_by(f32::total_cmp)
+            .unwrap()
+            .clamp(f32::MIN, f32::MAX);
         min..max
     }
 

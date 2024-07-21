@@ -26,8 +26,7 @@ fn lowpass() {
     analyzer.run(|_, out_samples| {
         filter.process_block(out_samples);
     });
-    // TODO: check why this plot ends up in an infinite loop.
-    // analyzer.plot_magnitude("Lowpass 1kHz", "out/lowpass_1k_mag.svg");
+    analyzer.plot_magnitude("Lowpass 1kHz", "out/lowpass_1k_mag.svg");
     analyzer.plot_phase("Lowpass 1kHz", "out/lowpass_1k_phase.svg");
     analyzer.save_output("out/lowpass_1k.wav");
 }
