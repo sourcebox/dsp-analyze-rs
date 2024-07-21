@@ -5,6 +5,7 @@ use realfft::{num_complex::Complex, RealFftPlanner};
 
 use crate::plot::{Plot, Series};
 use crate::sweep_generator::SweepGenerator;
+use crate::wav_writer;
 
 /// Configuration for the analyzer.
 #[derive(Debug, Clone)]
@@ -34,6 +35,12 @@ pub struct FftAnalyzer {
     /// Current configuration.
     pub config: FftAnalyzerConfig,
 
+    /// Input samples.
+    pub in_samples: Vec<f32>,
+
+    /// Output samples.
+    pub out_samples: Vec<f32>,
+
     /// Magnitude of the spectrum.
     pub spectrum_magnitude: Vec<f32>,
 
@@ -46,9 +53,19 @@ impl FftAnalyzer {
     pub fn new(config: FftAnalyzerConfig) -> Self {
         Self {
             config,
+            in_samples: Vec::new(),
+            out_samples: Vec::new(),
             spectrum_magnitude: Vec::new(),
             spectrum_phase: Vec::new(),
         }
+    }
+
+    /// Clears the spectrum data.
+    pub fn clear(&mut self) {
+        self.in_samples.clear();
+        self.out_samples.clear();
+        self.spectrum_magnitude.clear();
+        self.spectrum_phase.clear();
     }
 
     /// Runs the test signal through the provided function and
@@ -67,19 +84,20 @@ impl FftAnalyzer {
     {
         self.clear();
 
-        let in_samples = sweep(self.config.sample_rate);
-        let mut out_samples = in_samples.clone();
+        self.in_samples = sweep(self.config.sample_rate);
+        self.out_samples = self.in_samples.clone();
         let chunk_size = self.config.block_size;
 
-        for (in_samples, out_samples) in in_samples
+        for (in_samples, out_samples) in self
+            .in_samples
             .chunks(chunk_size)
-            .zip(out_samples.chunks_mut(chunk_size))
+            .zip(self.out_samples.chunks_mut(chunk_size))
         {
             func(in_samples, out_samples);
         }
 
-        let in_spectrum = fft(&in_samples);
-        let out_spectrum = fft(&out_samples);
+        let in_spectrum = fft(&self.in_samples);
+        let out_spectrum = fft(&self.out_samples);
         let spectrum = out_spectrum.iter().zip(in_spectrum).map(|v| v.0 / v.1);
 
         self.spectrum_magnitude = spectrum
@@ -91,10 +109,14 @@ impl FftAnalyzer {
             .collect();
     }
 
-    /// Clears the spectrum data.
-    pub fn clear(&mut self) {
-        self.spectrum_magnitude.clear();
-        self.spectrum_phase.clear();
+    /// Saves the input signal as WAV file.
+    pub fn save_input(&self, filename: impl AsRef<std::path::Path> + core::fmt::Display) {
+        wav_writer::write(filename, self.config.sample_rate as u32, &self.in_samples).unwrap();
+    }
+
+    /// Saves the output signal as WAV file.
+    pub fn save_output(&self, filename: impl AsRef<std::path::Path> + core::fmt::Display) {
+        wav_writer::write(filename, self.config.sample_rate as u32, &self.out_samples).unwrap();
     }
 
     /// Plots the magnitude as SVG file.

@@ -28,6 +28,7 @@ fn lowpass() {
     });
     analyzer.plot_magnitude("Lowpass 1kHz", "out/lowpass_1k_mag.svg");
     analyzer.plot_phase("Lowpass 1kHz", "out/lowpass_1k_phase.svg");
+    analyzer.save_output("out/lowpass_1k.wav");
 }
 
 #[test]
@@ -47,6 +48,7 @@ fn highpass() {
     });
     analyzer.plot_magnitude("Highpass 1kHz", "out/highpass_1k_mag.svg");
     analyzer.plot_phase("Highpass 1kHz", "out/highpass_1k_phase.svg");
+    analyzer.save_output("out/highpass_1k.wav");
 }
 
 #[test]
@@ -66,6 +68,7 @@ fn bandpass() {
     });
     analyzer.plot_magnitude("Bandpass 1kHz", "out/bandpass_1k_mag.svg");
     analyzer.plot_phase("Bandpass 1kHz", "out/bandpass_1k_phase.svg");
+    analyzer.save_output("out/bandpass_1k.wav");
 }
 
 #[test]
@@ -86,6 +89,7 @@ fn peak() {
     });
     analyzer.plot_magnitude("Peak 1kHz", "out/peak_1k_mag.svg");
     analyzer.plot_phase("Peak 1kHz", "out/peak_1k_phase.svg");
+    analyzer.save_output("out/peak_1k.wav");
 }
 
 #[test]
@@ -105,6 +109,7 @@ fn lowshelf() {
     });
     analyzer.plot_magnitude("Low shelf 1kHz", "out/lowshelf_1k_mag.svg");
     analyzer.plot_phase("Low shelf 1kHz", "out/lowshelf_1k_phase.svg");
+    analyzer.save_output("out/lowshelf_1k.wav");
 }
 
 #[test]
@@ -124,6 +129,7 @@ fn highshelf() {
     });
     analyzer.plot_magnitude("High shelf 1kHz", "out/highshelf_1k_mag.svg");
     analyzer.plot_phase("High shelf 1kHz", "out/highshelf_1k_phase.svg");
+    analyzer.save_output("out/highshelf_1k.wav");
 }
 
 #[test]
@@ -143,6 +149,7 @@ fn notch() {
     });
     analyzer.plot_magnitude("Notch 1kHz", "out/notch_1k_mag.svg");
     analyzer.plot_phase("Notch 1kHz", "out/notch_1k_phase.svg");
+    analyzer.save_output("out/notch_1k.wav");
 }
 
 #[test]
@@ -162,4 +169,5 @@ fn allpass() {
     });
     analyzer.plot_magnitude("Allpass 1kHz", "out/allpass_1k_mag.svg");
     analyzer.plot_phase("Allpass 1kHz", "out/allpass_1k_phase.svg");
+    analyzer.save_output("out/allpass_1k.wav");
 }
