@@ -1,5 +1,7 @@
 //! FFT analyzer with Bode plots showing mangnitude and phase.
 
+#![allow(unused)]
+
 use plotters::prelude::*;
 use realfft::{num_complex::Complex, RealFftPlanner};
 
@@ -84,7 +86,7 @@ impl FftAnalyzer {
     {
         self.clear();
 
-        self.in_samples = sweep(self.config.sample_rate);
+        self.in_samples = unit_impulse(self.config.sample_rate as usize);
         self.out_samples.clone_from(&self.in_samples);
         let chunk_size = self.config.block_size;
 
@@ -96,15 +98,14 @@ impl FftAnalyzer {
             func(in_samples, out_samples);
         }
 
-        let in_spectrum = fft(&self.in_samples);
         let out_spectrum = fft(&self.out_samples);
-        let spectrum = out_spectrum.iter().zip(in_spectrum).map(|v| v.0 / v.1);
 
-        self.spectrum_magnitude = spectrum
-            .clone()
+        self.spectrum_magnitude = out_spectrum
+            .iter()
             .map(|v| 20.0 * f32::log10(v.norm()))
             .collect();
-        self.spectrum_phase = spectrum
+        self.spectrum_phase = out_spectrum
+            .iter()
             .map(|v| v.arg() / std::f32::consts::PI * 180.0)
             .collect();
     }
@@ -152,6 +153,14 @@ impl FftAnalyzer {
     }
 }
 
+/// Returns a `Vec` containing a unit impulse.
+fn unit_impulse(length: usize) -> Vec<f32> {
+    let mut samples = vec![0.0; length];
+    samples[0] = 1.0;
+
+    samples
+}
+
 /// Returns a `Vec` of sweep samples.
 fn sweep(sample_rate: f32) -> Vec<f32> {
     let mut sweep_generator = SweepGenerator::new(sample_rate);
@@ -183,11 +192,6 @@ fn fft(indata: &[f32]) -> Vec<Complex<f32>> {
     // Forward transform the signal.
     let mut indata = indata.to_owned();
     r2c.process(&mut indata, &mut spectrum).unwrap();
-    let scale = 1.0 / (spectrum.len() as f32).sqrt();
-
-    for v in spectrum.iter_mut() {
-        *v *= scale;
-    }
 
     spectrum
 }
