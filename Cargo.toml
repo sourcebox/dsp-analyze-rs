@@ -1,0 +1,19 @@
+[package]
+name = "dsp-analyze"
+version = "0.1.0"
+edition = "2021"
+authors = [
+    "Oliver Rockstedt <info@sourcebox.de>",
+    "Nathan Graule <me@solarliner.dev>",
+]
+
+[dependencies]
+plotters = "0.3.6"
+wav = "=1.0.0"
+realfft = "3.3.0"
+
+[dev-dependencies]
+micromath = "2.1.0"
+
+[lints.rust]
+missing_docs = "warn"
