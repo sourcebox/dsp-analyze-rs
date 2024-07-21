@@ -2,6 +2,8 @@
 //!
 //! Taken from <https://github.com/SolarLiner/valib/src/util.rs>.
 
+#![allow(unused)]
+
 use std::{ops::Range, path::Path};
 
 use plotters::coord::{self, ranged1d::ValueFormatter};
@@ -73,10 +75,18 @@ impl<'a> Series<'a> {
     }
 }
 
+pub enum AxisRange {
+    AutoLin,
+    AutoLog,
+    ManualLin(Range<f32>),
+    ManualLog(Range<f32>),
+}
+
 pub struct Plot<'a> {
     pub title: &'a str,
     pub bode: bool,
     pub series: &'a [Series<'a>],
+    pub y_range: AxisRange,
 }
 
 impl<'a> Plot<'a> {
@@ -108,26 +118,39 @@ impl<'a> Plot<'a> {
             timescale
         };
 
-        let yrange = self
-            .series
-            .iter()
-            .map(|s| s.y_range())
-            .reduce(|l, r| {
-                let start = l.start.min(r.start);
-                let end = l.end.max(r.end);
-                start..end
-            })
-            .unwrap();
+        let yrange = match &self.y_range {
+            AxisRange::AutoLin | AxisRange::AutoLog => self
+                .series
+                .iter()
+                .map(|s| s.y_range())
+                .reduce(|l, r| {
+                    let start = l.start.min(r.start);
+                    let end = l.end.max(r.end);
+                    start..end
+                })
+                .unwrap(),
+            AxisRange::ManualLin(range) | AxisRange::ManualLog(range) => range.to_owned(),
+        };
 
         let mut ctx = ChartBuilder::on(output);
         ctx.set_label_area_size(LabelAreaPosition::Left, 40)
             .set_label_area_size(LabelAreaPosition::Bottom, 40)
             .caption(self.title, ("sans-serif", 40));
         if self.bode {
-            let ctx = ctx
-                .build_cartesian_2d(timescale.log_scale(), yrange)
-                .unwrap();
-            self.render(ctx);
+            match &self.y_range {
+                AxisRange::AutoLin | AxisRange::ManualLin(_) => {
+                    let ctx = ctx
+                        .build_cartesian_2d(timescale.log_scale(), yrange)
+                        .unwrap();
+                    self.render(ctx);
+                }
+                AxisRange::AutoLog | AxisRange::ManualLog(_) => {
+                    let ctx = ctx
+                        .build_cartesian_2d(timescale.log_scale(), yrange.log_scale())
+                        .unwrap();
+                    self.render(ctx);
+                }
+            }
         } else {
             let ctx = ctx.build_cartesian_2d(timescale, yrange).unwrap();
             self.render(ctx);

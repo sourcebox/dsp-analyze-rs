@@ -3,7 +3,7 @@
 use plotters::prelude::*;
 use realfft::{num_complex::Complex, RealFftPlanner};
 
-use crate::plot::{Plot, Series};
+use crate::plot::{AxisRange, Plot, Series};
 use crate::sweep_generator::SweepGenerator;
 use crate::wav_writer;
 
@@ -130,6 +130,7 @@ impl FftAnalyzer {
                 series: self.spectrum_magnitude.as_slice(),
                 color: &BLUE,
             }],
+            y_range: AxisRange::AutoLin,
         }
         .create_svg(filename);
     }
@@ -145,6 +146,7 @@ impl FftAnalyzer {
                 series: self.spectrum_phase.as_slice(),
                 color: &RED,
             }],
+            y_range: AxisRange::ManualLin(-180.0..180.0),
         }
         .create_svg(filename);
     }
