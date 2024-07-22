@@ -100,9 +100,10 @@ impl FftAnalyzer {
 
         let out_spectrum = fft(&self.out_samples);
 
+        // TODO: check if clamping the magnitude is required after FFT results are improved.
         self.spectrum_magnitude = out_spectrum
             .iter()
-            .map(|v| 20.0 * f32::log10(v.norm()))
+            .map(|v| (20.0 * f32::log10(v.norm())).clamp(-100.0, 100.0))
             .collect();
         self.spectrum_phase = out_spectrum
             .iter()
