@@ -265,3 +265,20 @@ fn highshelf1st() {
     );
     analyzer.save_output("out/highshelf1st_1k.wav");
 }
+
+#[test]
+fn allpass1st() {
+    let mut filter = BiquadFilter2::new(SAMPLE_RATE);
+    filter.set_params(FilterParams::Allpass1st { freq: 1000.0 });
+
+    let mut analyzer = FftAnalyzer::new(FftAnalyzerConfig {
+        block_size: BLOCK_SIZE,
+        ..Default::default()
+    });
+    analyzer.run(|_, out_samples| {
+        filter.process_block(out_samples);
+    });
+    analyzer.plot_magnitude("Allpass first order 1kHz", "out/allpass1st_1k_mag.svg");
+    analyzer.plot_phase("Allpass first order 1kHz", "out/allpass1st_1k_phase.svg");
+    analyzer.save_output("out/allpass1st_1k.wav");
+}

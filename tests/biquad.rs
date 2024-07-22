@@ -123,6 +123,12 @@ pub enum FilterParams {
         /// Gain in dB.
         gain: f32,
     },
+
+    /// First order allpass mode.
+    Allpass1st {
+        /// Center frequency in Hz.
+        freq: f32,
+    },
 }
 
 impl FilterParams {
@@ -150,7 +156,10 @@ impl FilterParams {
                 *freq = freq.clamp(freq_range.0, freq_range.1);
                 *gain = gain.clamp(gain_range.0, gain_range.1);
             }
-            Self::Lowpass1p { freq } | Self::Lowpass1p1z { freq } | Self::Highpass1p1z { freq } => {
+            Self::Lowpass1p { freq }
+            | Self::Lowpass1p1z { freq }
+            | Self::Highpass1p1z { freq }
+            | Self::Allpass1st { freq } => {
                 *freq = freq.clamp(freq_range.0, freq_range.1);
             }
         }
@@ -405,6 +414,17 @@ impl BiquadFilterCoefficients {
                         b1: (k - v) * norm,
                         b2: 0.0,
                     }
+                }
+            }
+            FilterParams::Allpass1st { freq } => {
+                let k = (PI * freq * sample_time).tan();
+                let a0 = (1.0 - k) / (1.0 + k);
+                Self {
+                    a0: a0,
+                    a1: -1.0,
+                    a2: 0.0,
+                    b1: -a0,
+                    b2: 0.0,
                 }
             }
         }
