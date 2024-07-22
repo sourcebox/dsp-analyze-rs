@@ -222,3 +222,46 @@ fn highpass1p1z() {
     analyzer.plot_phase("Highpass first order 1kHz", "out/highpass1p1z_1k_phase.svg");
     analyzer.save_output("out/highpass1p1z_1k.wav");
 }
+
+#[test]
+fn lowshelf1st() {
+    let mut filter = BiquadFilter2::new(SAMPLE_RATE);
+    filter.set_params(FilterParams::LowShelf1st {
+        freq: 1000.0,
+        gain: 20.0,
+    });
+
+    let mut analyzer = FftAnalyzer::new(FftAnalyzerConfig {
+        block_size: BLOCK_SIZE,
+        ..Default::default()
+    });
+    analyzer.run(|_, out_samples| {
+        filter.process_block(out_samples);
+    });
+    analyzer.plot_magnitude("Low shelf first order 1kHz", "out/lowshelf1st_1k_mag.svg");
+    analyzer.plot_phase("Low shelf first order 1kHz", "out/lowshelf1st_1k_phase.svg");
+    analyzer.save_output("out/lowshelf1st_1k.wav");
+}
+
+#[test]
+fn highshelf1st() {
+    let mut filter = BiquadFilter2::new(SAMPLE_RATE);
+    filter.set_params(FilterParams::HighShelf1st {
+        freq: 1000.0,
+        gain: 20.0,
+    });
+
+    let mut analyzer = FftAnalyzer::new(FftAnalyzerConfig {
+        block_size: BLOCK_SIZE,
+        ..Default::default()
+    });
+    analyzer.run(|_, out_samples| {
+        filter.process_block(out_samples);
+    });
+    analyzer.plot_magnitude("High shelf first order 1kHz", "out/highshelf1st_1k_mag.svg");
+    analyzer.plot_phase(
+        "High shelf first order 1kHz",
+        "out/highshelf1st_1k_phase.svg",
+    );
+    analyzer.save_output("out/highshelf1st_1k.wav");
+}

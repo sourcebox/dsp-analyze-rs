@@ -105,6 +105,24 @@ pub enum FilterParams {
         /// Cutoff frequency in Hz.
         freq: f32,
     },
+
+    /// First order low shelf mode.
+    LowShelf1st {
+        /// Base frequency in Hz.
+        freq: f32,
+
+        /// Gain in dB.
+        gain: f32,
+    },
+
+    /// First order high shelf mode.
+    HighShelf1st {
+        /// Base frequency in Hz.
+        freq: f32,
+
+        /// Gain in dB.
+        gain: f32,
+    },
 }
 
 impl FilterParams {
@@ -125,7 +143,10 @@ impl FilterParams {
                 *q = q.clamp(q_range.0, q_range.1);
                 *gain = gain.clamp(gain_range.0, gain_range.1);
             }
-            Self::LowShelf { freq, gain } | Self::HighShelf { freq, gain } => {
+            Self::LowShelf { freq, gain }
+            | Self::HighShelf { freq, gain }
+            | Self::LowShelf1st { freq, gain }
+            | Self::HighShelf1st { freq, gain } => {
                 *freq = freq.clamp(freq_range.0, freq_range.1);
                 *gain = gain.clamp(gain_range.0, gain_range.1);
             }
@@ -338,6 +359,52 @@ impl BiquadFilterCoefficients {
                     a2: 0.0,
                     b1: (k - 1.0) * norm,
                     b2: 0.0,
+                }
+            }
+            FilterParams::LowShelf1st { freq, gain } => {
+                let k = (PI * freq * sample_time).tan();
+                let v = 10.0.powf(gain.abs() / 20.0);
+                if gain >= 0.0 {
+                    let norm = 1.0 / (k + 1.0);
+                    Self {
+                        a0: (k * v + 1.0) * norm,
+                        a1: (k * v - 1.0) * norm,
+                        a2: 0.0,
+                        b1: (k - 1.0) * norm,
+                        b2: 0.0,
+                    }
+                } else {
+                    let norm = 1.0 / (k * v + 1.0);
+                    Self {
+                        a0: (k + 1.0) * norm,
+                        a1: (k - 1.0) * norm,
+                        a2: 0.0,
+                        b1: (k * v - 1.0) * norm,
+                        b2: 0.0,
+                    }
+                }
+            }
+            FilterParams::HighShelf1st { freq, gain } => {
+                let k = (PI * freq * sample_time).tan();
+                let v = 10.0.powf(gain.abs() / 20.0);
+                if gain >= 0.0 {
+                    let norm = 1.0 / (k + 1.0);
+                    Self {
+                        a0: (k + v) * norm,
+                        a1: (k - v) * norm,
+                        a2: 0.0,
+                        b1: (k - 1.0) * norm,
+                        b2: 0.0,
+                    }
+                } else {
+                    let norm = 1.0 / (k + v);
+                    Self {
+                        a0: (k + 1.0) * norm,
+                        a1: (k - 1.0) * norm,
+                        a2: 0.0,
+                        b1: (k - v) * norm,
+                        b2: 0.0,
+                    }
                 }
             }
         }
