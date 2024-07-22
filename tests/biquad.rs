@@ -88,6 +88,12 @@ pub enum FilterParams {
         q: f32,
     },
 
+    /// One-pole lowpass mode.
+    Lowpass1p {
+        /// Cutoff frequency in Hz.
+        freq: f32,
+    },
+
     /// First order lowpass mode.
     Lowpass1p1z {
         /// Cutoff frequency in Hz.
@@ -123,7 +129,7 @@ impl FilterParams {
                 *freq = freq.clamp(freq_range.0, freq_range.1);
                 *gain = gain.clamp(gain_range.0, gain_range.1);
             }
-            Self::Lowpass1p1z { freq } | Self::Highpass1p1z { freq } => {
+            Self::Lowpass1p { freq } | Self::Lowpass1p1z { freq } | Self::Highpass1p1z { freq } => {
                 *freq = freq.clamp(freq_range.0, freq_range.1);
             }
         }
@@ -300,6 +306,16 @@ impl BiquadFilterCoefficients {
                     a2: 1.0,
                     b1: a1,
                     b2: a0,
+                }
+            }
+            FilterParams::Lowpass1p { freq } => {
+                let b1 = (-2.0 * PI * freq * sample_time).exp();
+                Self {
+                    a0: 1.0 - b1,
+                    a1: 0.0,
+                    a2: 0.0,
+                    b1: -b1,
+                    b2: 0.0,
                 }
             }
             FilterParams::Lowpass1p1z { freq } => {

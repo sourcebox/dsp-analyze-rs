@@ -173,6 +173,23 @@ fn allpass() {
 }
 
 #[test]
+fn lowpass1p() {
+    let mut filter = BiquadFilter2::new(SAMPLE_RATE);
+    filter.set_params(FilterParams::Lowpass1p { freq: 1000.0 });
+
+    let mut analyzer = FftAnalyzer::new(FftAnalyzerConfig {
+        block_size: BLOCK_SIZE,
+        ..Default::default()
+    });
+    analyzer.run(|_, out_samples| {
+        filter.process_block(out_samples);
+    });
+    analyzer.plot_magnitude("Lowpass one-pole 1kHz", "out/lowpass1p_1k_mag.svg");
+    analyzer.plot_phase("Lowpass one-pole 1kHz", "out/lowpass1p_1k_phase.svg");
+    analyzer.save_output("out/lowpass1p_1k.wav");
+}
+
+#[test]
 fn lowpass1p1z() {
     let mut filter = BiquadFilter2::new(SAMPLE_RATE);
     filter.set_params(FilterParams::Lowpass1p1z { freq: 1000.0 });
