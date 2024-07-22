@@ -26,9 +26,9 @@ fn lowpass() {
     analyzer.run(|_, out_samples| {
         filter.process_block(out_samples);
     });
-    analyzer.plot_magnitude("Lowpass 1kHz", "out/lowpass_1k_mag.svg");
-    analyzer.plot_phase("Lowpass 1kHz", "out/lowpass_1k_phase.svg");
-    analyzer.save_output("out/lowpass_1k.wav");
+    analyzer.plot_magnitude("Lowpass 1kHz", "out/filters/lowpass_1k_mag.svg");
+    analyzer.plot_phase("Lowpass 1kHz", "out/filters/lowpass_1k_phase.svg");
+    analyzer.save_output("out/filters/lowpass_1k.wav");
 }
 
 #[test]
@@ -46,9 +46,9 @@ fn highpass() {
     analyzer.run(|_, out_samples| {
         filter.process_block(out_samples);
     });
-    analyzer.plot_magnitude("Highpass 1kHz", "out/highpass_1k_mag.svg");
-    analyzer.plot_phase("Highpass 1kHz", "out/highpass_1k_phase.svg");
-    analyzer.save_output("out/highpass_1k.wav");
+    analyzer.plot_magnitude("Highpass 1kHz", "out/filters/highpass_1k_mag.svg");
+    analyzer.plot_phase("Highpass 1kHz", "out/filters/highpass_1k_phase.svg");
+    analyzer.save_output("out/filters/highpass_1k.wav");
 }
 
 #[test]
@@ -66,9 +66,9 @@ fn bandpass() {
     analyzer.run(|_, out_samples| {
         filter.process_block(out_samples);
     });
-    analyzer.plot_magnitude("Bandpass 1kHz", "out/bandpass_1k_mag.svg");
-    analyzer.plot_phase("Bandpass 1kHz", "out/bandpass_1k_phase.svg");
-    analyzer.save_output("out/bandpass_1k.wav");
+    analyzer.plot_magnitude("Bandpass 1kHz", "out/filters/bandpass_1k_mag.svg");
+    analyzer.plot_phase("Bandpass 1kHz", "out/filters/bandpass_1k_phase.svg");
+    analyzer.save_output("out/filters/bandpass_1k.wav");
 }
 
 #[test]
@@ -87,9 +87,9 @@ fn peak() {
     analyzer.run(|_, out_samples| {
         filter.process_block(out_samples);
     });
-    analyzer.plot_magnitude("Peak 1kHz", "out/peak_1k_mag.svg");
-    analyzer.plot_phase("Peak 1kHz", "out/peak_1k_phase.svg");
-    analyzer.save_output("out/peak_1k.wav");
+    analyzer.plot_magnitude("Peak 1kHz", "out/filters/peak_1k_mag.svg");
+    analyzer.plot_phase("Peak 1kHz", "out/filters/peak_1k_phase.svg");
+    analyzer.save_output("out/filters/peak_1k.wav");
 }
 
 #[test]
@@ -107,9 +107,9 @@ fn lowshelf() {
     analyzer.run(|_, out_samples| {
         filter.process_block(out_samples);
     });
-    analyzer.plot_magnitude("Low shelf 1kHz", "out/lowshelf_1k_mag.svg");
-    analyzer.plot_phase("Low shelf 1kHz", "out/lowshelf_1k_phase.svg");
-    analyzer.save_output("out/lowshelf_1k.wav");
+    analyzer.plot_magnitude("Low shelf 1kHz", "out/filters/lowshelf_1k_mag.svg");
+    analyzer.plot_phase("Low shelf 1kHz", "out/filters/lowshelf_1k_phase.svg");
+    analyzer.save_output("out/filters/lowshelf_1k.wav");
 }
 
 #[test]
@@ -127,9 +127,9 @@ fn highshelf() {
     analyzer.run(|_, out_samples| {
         filter.process_block(out_samples);
     });
-    analyzer.plot_magnitude("High shelf 1kHz", "out/highshelf_1k_mag.svg");
-    analyzer.plot_phase("High shelf 1kHz", "out/highshelf_1k_phase.svg");
-    analyzer.save_output("out/highshelf_1k.wav");
+    analyzer.plot_magnitude("High shelf 1kHz", "out/filters/highshelf_1k_mag.svg");
+    analyzer.plot_phase("High shelf 1kHz", "out/filters/highshelf_1k_phase.svg");
+    analyzer.save_output("out/filters/highshelf_1k.wav");
 }
 
 #[test]
@@ -147,9 +147,9 @@ fn notch() {
     analyzer.run(|_, out_samples| {
         filter.process_block(out_samples);
     });
-    analyzer.plot_magnitude("Notch 1kHz", "out/notch_1k_mag.svg");
-    analyzer.plot_phase("Notch 1kHz", "out/notch_1k_phase.svg");
-    analyzer.save_output("out/notch_1k.wav");
+    analyzer.plot_magnitude("Notch 1kHz", "out/filters/notch_1k_mag.svg");
+    analyzer.plot_phase("Notch 1kHz", "out/filters/notch_1k_phase.svg");
+    analyzer.save_output("out/filters/notch_1k.wav");
 }
 
 #[test]
@@ -167,9 +167,9 @@ fn allpass() {
     analyzer.run(|_, out_samples| {
         filter.process_block(out_samples);
     });
-    analyzer.plot_magnitude("Allpass 1kHz", "out/allpass_1k_mag.svg");
-    analyzer.plot_phase("Allpass 1kHz", "out/allpass_1k_phase.svg");
-    analyzer.save_output("out/allpass_1k.wav");
+    analyzer.plot_magnitude("Allpass 1kHz", "out/filters/allpass_1k_mag.svg");
+    analyzer.plot_phase("Allpass 1kHz", "out/filters/allpass_1k_phase.svg");
+    analyzer.save_output("out/filters/allpass_1k.wav");
 }
 
 #[test]
@@ -184,9 +184,12 @@ fn lowpass1p() {
     analyzer.run(|_, out_samples| {
         filter.process_block(out_samples);
     });
-    analyzer.plot_magnitude("Lowpass one-pole 1kHz", "out/lowpass1p_1k_mag.svg");
-    analyzer.plot_phase("Lowpass one-pole 1kHz", "out/lowpass1p_1k_phase.svg");
-    analyzer.save_output("out/lowpass1p_1k.wav");
+    analyzer.plot_magnitude("Lowpass one-pole 1kHz", "out/filters/lowpass1p_1k_mag.svg");
+    analyzer.plot_phase(
+        "Lowpass one-pole 1kHz",
+        "out/filters/lowpass1p_1k_phase.svg",
+    );
+    analyzer.save_output("out/filters/lowpass1p_1k.wav");
 }
 
 #[test]
@@ -201,9 +204,15 @@ fn lowpass1p1z() {
     analyzer.run(|_, out_samples| {
         filter.process_block(out_samples);
     });
-    analyzer.plot_magnitude("Lowpass first order 1kHz", "out/lowpass1p1z_1k_mag.svg");
-    analyzer.plot_phase("Lowpass first order 1kHz", "out/lowpass1p1z_1k_phase.svg");
-    analyzer.save_output("out/lowpass1p1z_1k.wav");
+    analyzer.plot_magnitude(
+        "Lowpass first order 1kHz",
+        "out/filters/lowpass1p1z_1k_mag.svg",
+    );
+    analyzer.plot_phase(
+        "Lowpass first order 1kHz",
+        "out/filters/lowpass1p1z_1k_phase.svg",
+    );
+    analyzer.save_output("out/filters/lowpass1p1z_1k.wav");
 }
 
 #[test]
@@ -218,9 +227,15 @@ fn highpass1p1z() {
     analyzer.run(|_, out_samples| {
         filter.process_block(out_samples);
     });
-    analyzer.plot_magnitude("Highpass first order 1kHz", "out/highpass1p1z_1k_mag.svg");
-    analyzer.plot_phase("Highpass first order 1kHz", "out/highpass1p1z_1k_phase.svg");
-    analyzer.save_output("out/highpass1p1z_1k.wav");
+    analyzer.plot_magnitude(
+        "Highpass first order 1kHz",
+        "out/filters/highpass1p1z_1k_mag.svg",
+    );
+    analyzer.plot_phase(
+        "Highpass first order 1kHz",
+        "out/filters/highpass1p1z_1k_phase.svg",
+    );
+    analyzer.save_output("out/filters/highpass1p1z_1k.wav");
 }
 
 #[test]
@@ -238,9 +253,15 @@ fn lowshelf1st() {
     analyzer.run(|_, out_samples| {
         filter.process_block(out_samples);
     });
-    analyzer.plot_magnitude("Low shelf first order 1kHz", "out/lowshelf1st_1k_mag.svg");
-    analyzer.plot_phase("Low shelf first order 1kHz", "out/lowshelf1st_1k_phase.svg");
-    analyzer.save_output("out/lowshelf1st_1k.wav");
+    analyzer.plot_magnitude(
+        "Low shelf first order 1kHz",
+        "out/filters/lowshelf1st_1k_mag.svg",
+    );
+    analyzer.plot_phase(
+        "Low shelf first order 1kHz",
+        "out/filters/lowshelf1st_1k_phase.svg",
+    );
+    analyzer.save_output("out/filters/lowshelf1st_1k.wav");
 }
 
 #[test]
@@ -258,12 +279,15 @@ fn highshelf1st() {
     analyzer.run(|_, out_samples| {
         filter.process_block(out_samples);
     });
-    analyzer.plot_magnitude("High shelf first order 1kHz", "out/highshelf1st_1k_mag.svg");
+    analyzer.plot_magnitude(
+        "High shelf first order 1kHz",
+        "out/filters/highshelf1st_1k_mag.svg",
+    );
     analyzer.plot_phase(
         "High shelf first order 1kHz",
-        "out/highshelf1st_1k_phase.svg",
+        "out/filters/highshelf1st_1k_phase.svg",
     );
-    analyzer.save_output("out/highshelf1st_1k.wav");
+    analyzer.save_output("out/filters/highshelf1st_1k.wav");
 }
 
 #[test]
@@ -278,7 +302,13 @@ fn allpass1st() {
     analyzer.run(|_, out_samples| {
         filter.process_block(out_samples);
     });
-    analyzer.plot_magnitude("Allpass first order 1kHz", "out/allpass1st_1k_mag.svg");
-    analyzer.plot_phase("Allpass first order 1kHz", "out/allpass1st_1k_phase.svg");
-    analyzer.save_output("out/allpass1st_1k.wav");
+    analyzer.plot_magnitude(
+        "Allpass first order 1kHz",
+        "out/filters/allpass1st_1k_mag.svg",
+    );
+    analyzer.plot_phase(
+        "Allpass first order 1kHz",
+        "out/filters/allpass1st_1k_phase.svg",
+    );
+    analyzer.save_output("out/filters/allpass1st_1k.wav");
 }
