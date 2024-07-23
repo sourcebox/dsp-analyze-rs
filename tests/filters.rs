@@ -1,6 +1,6 @@
 //! Tests for filters.
 
-mod biquad;
+pub mod biquad;
 
 use biquad::*;
 use dsp_analyze::*;

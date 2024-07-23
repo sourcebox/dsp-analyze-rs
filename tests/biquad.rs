@@ -1,7 +1,5 @@
 //! Biquad IIR filters.
 
-#![allow(unused)]
-
 use core::f32::consts::PI;
 
 use micromath::F32Ext;
@@ -129,41 +127,6 @@ pub enum FilterParams {
         /// Center frequency in Hz.
         freq: f32,
     },
-}
-
-impl FilterParams {
-    /// Clamps all parameters to allowed ranges.
-    pub fn clamp(&mut self, freq_range: (f32, f32), q_range: (f32, f32), gain_range: (f32, f32)) {
-        match self {
-            Self::Bypass => {}
-            Self::Lowpass { freq, q }
-            | Self::Highpass { freq, q }
-            | Self::Bandpass { freq, q }
-            | Self::Notch { freq, q }
-            | Self::Allpass { freq, q } => {
-                *freq = freq.clamp(freq_range.0, freq_range.1);
-                *q = q.clamp(q_range.0, q_range.1);
-            }
-            Self::Peak { freq, q, gain } => {
-                *freq = freq.clamp(freq_range.0, freq_range.1);
-                *q = q.clamp(q_range.0, q_range.1);
-                *gain = gain.clamp(gain_range.0, gain_range.1);
-            }
-            Self::LowShelf { freq, gain }
-            | Self::HighShelf { freq, gain }
-            | Self::LowShelf1st { freq, gain }
-            | Self::HighShelf1st { freq, gain } => {
-                *freq = freq.clamp(freq_range.0, freq_range.1);
-                *gain = gain.clamp(gain_range.0, gain_range.1);
-            }
-            Self::Lowpass1p { freq }
-            | Self::Lowpass1p1z { freq }
-            | Self::Highpass1p1z { freq }
-            | Self::Allpass1st { freq } => {
-                *freq = freq.clamp(freq_range.0, freq_range.1);
-            }
-        }
-    }
 }
 
 /// Normalized filter coefficients.
