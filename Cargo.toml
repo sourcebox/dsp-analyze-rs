@@ -8,9 +8,9 @@ authors = [
 ]
 
 [dependencies]
-plotters = "0.3.6"
+plotters = "0.3.7"
 wav = "=1.0.0"
-realfft = "3.3.0"
+realfft = "3.4.0"
 
 [dev-dependencies]
 micromath = "2.1.0"
