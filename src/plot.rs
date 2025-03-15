@@ -25,7 +25,7 @@ pub struct Series<'a> {
     pub color: &'a RGBColor,
 }
 
-impl<'a> Series<'a> {
+impl Series<'_> {
     pub fn validate(&self) -> Result<(), String> {
         if self.samplerate <= 0. {
             return Err(format!("Series: {:?}: Samplerate is negative", self.label));
@@ -101,7 +101,7 @@ pub struct Plot<'a> {
     pub y_range: AxisRange,
 }
 
-impl<'a> Plot<'a> {
+impl Plot<'_> {
     pub fn validate(&self) -> Result<(), String> {
         if self.series.is_empty() {
             return Err(format!("Plot {:?}: no series", self.title));

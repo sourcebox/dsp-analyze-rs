@@ -19,7 +19,7 @@ pub fn write(
 
     let spec = WavSpec {
         channels: 2,
-        sample_rate: sample_rate,
+        sample_rate,
         bits_per_sample: 32,
         sample_format: SampleFormat::Float,
     };
