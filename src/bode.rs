@@ -3,7 +3,7 @@
 #![allow(unused)]
 
 use plotters::prelude::*;
-use realfft::{num_complex::Complex, RealFftPlanner};
+use realfft::{RealFftPlanner, num_complex::Complex};
 
 use crate::plot::{AxisRange, Plot, Series};
 use crate::sweep_generator::SweepGenerator;
