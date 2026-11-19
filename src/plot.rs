@@ -27,7 +27,7 @@ pub struct Series<'a> {
 
 impl Series<'_> {
     pub fn validate(&self) -> Result<(), String> {
-        if self.samplerate <= 0. {
+        if self.samplerate <= 0.0 {
             return Err(format!("Series: {:?}: Samplerate is negative", self.label));
         }
         if self.series.is_empty() {
@@ -40,10 +40,10 @@ impl Series<'_> {
     pub fn timescale(&self, bode: bool) -> Range<f32> {
         assert_ok(self.validate());
         if bode {
-            0.0..self.samplerate / 2.0
+            1.0..self.samplerate / 2.0
         } else {
             let tmax = self.series.len() as f32 / self.samplerate;
-            0.0..tmax
+            1.0..tmax
         }
     }
 

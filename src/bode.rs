@@ -98,7 +98,7 @@ impl FftAnalyzer {
             func(in_samples, out_samples);
         }
 
-        let out_spectrum = fft(&self.out_samples);
+        let out_spectrum = &fft(&self.out_samples)[1..((self.config.sample_rate * 0.5) as usize)];
 
         // TODO: check if clamping the magnitude is required after FFT results are improved.
         self.spectrum_magnitude = out_spectrum
@@ -129,7 +129,7 @@ impl FftAnalyzer {
             series: &[Series {
                 label: "Magnitude",
                 samplerate: self.config.sample_rate,
-                series: self.spectrum_magnitude.as_slice(),
+                series: &self.spectrum_magnitude,
                 color: &BLUE,
             }],
             y_range: AxisRange::AutoLin,
@@ -145,7 +145,7 @@ impl FftAnalyzer {
             series: &[Series {
                 label: "Phase",
                 samplerate: self.config.sample_rate,
-                series: self.spectrum_phase.as_slice(),
+                series: &self.spectrum_phase,
                 color: &RED,
             }],
             y_range: AxisRange::ManualLin(-180.0..180.0),
